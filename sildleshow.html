@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>slide</title>
+</head>
+<style>
+    body{
+        margin: 0;
+        font-family: monospace;
+        background-color: coral;
+    }
+    .slider{
+        width: 700px;
+        max-width: 100w;
+        height: 300px;
+        margin: auto;
+        position: relative;
+        overflow: hidden;
+    }
+    .list{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        margin-top: 20px;
+        display: flex;
+        width: max-content;
+        transition: 1s;
+    }
+    .list img{
+        width: 700px;
+        max-width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .buttons{
+        position: absolute;
+        top: 45%;
+        left: 5%;
+        width: 90%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .buttons button{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #fff5;
+        color: #fff;
+        border: none;
+        font-family: monospace;
+        font-weight: bold;
+    }
+    .dots{
+        position: absolute;
+        bottom: 10px;
+        color: #fff;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+    .dots li{
+        list-style: none;
+        width: 10px;
+        height: 10px;
+        background-color: #fff;
+        margin: 20px;
+        border-radius: 20px;
+        transition: 1s;
+
+    }
+    .dots li.active{
+        width: 30px;
+    }
+</style>
+<body>
+    <div class="slider">
+        <div class="list">
+            <div class="item">
+                <img src="./imgs/slide1.jpg" alt="" class="">
+            </div>
+            <div class="item">
+                <img src="./imgs/slide2.png" alt="" class="">
+            </div>
+            <div class="item">
+                <img src="./imgs/slide3.jpg" alt="" class="">
+            </div>
+            <div class="item">
+                <img src="./imgs/slide4.jpg" alt="" class="">
+            </div>
+            <div class="item">
+                 <img src="./imgs/slide5.jpg" alt="" class="">
+            </div>
+        </div>
+        <div class="buttons">
+             <button id="prev"><</button>
+             <button id="next">></button>
+        </div>
+        <ul class="dots">
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</body>
+<script>
+    let list = document.querySelector('.slider .list');
+    let items = document.querySelectorAll('.slider .list .item');
+    let dots = document.querySelectorAll('.slider .dots li');
+    let prev = document.getElementById('prev');
+    let next = document.getElementById('next');
+
+
+    let active = 0;
+    let lengthItems = items.length - 1;
+
+    next.onclick = function() {
+        if(active + 1 > lengthItems){
+            active = 0;
+        }else{
+            active ++;
+        }
+        reloadSlider();
+    }
+    prev.onclick = function() {
+        if(active - 1 < 0){
+            active = lengthItems;
+        }else{
+            active = active - 1;
+        }
+        reloadSlider();
+    }
+    let refreshSlider = setInterval(() =>{next.click()}, 3000);
+    function reloadSlider() {
+        let checkleft = items[active].offsetLeft;
+        list.style.left = -checkleft + 'px';
+
+        let lastActiveDots = document.querySelector('.slider .dots li.active');
+        lastActiveDots.classList.remove('active');
+        dots[active].classList.add('active');
+        clearInterval(refreshSlider);
+        refreshSlider = setInterval(() =>{next.click()},5000);
+    }
+    dots.forEach((li,key) => {
+        li.addEventListener('click',function(){
+            active = key ;
+            reloadSlider();
+        })
+    })
+
+</script>
+</html>
